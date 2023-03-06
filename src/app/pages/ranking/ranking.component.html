@@ -1,0 +1,18 @@
+<div>
+    <p>Scores</p>
+    <!-- tableau des scores avec <numéro> <nom> <points> <details> -->
+    <table>
+        <tr>
+            <th>Rang</th>
+            <th>Nom</th>
+            <th>Scores</th>
+            <th>Détails</th>
+        </tr>
+        <tr *ngFor="let joueur of participants">
+            <td>{{joueur.rang}}</td>
+            <td>{{joueur.name}}</td>
+            <td>{{joueur.points}}</td>
+            <td>{{joueur.victoires}}-{{joueur.defaites}}-{{joueur.nuls}}</td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,18 @@
+<div>
+    <p>Ajouter un joueur</p>
+    <label for="nomJoueur">Nom</label>
+    <input [(ngModel)]="nomJoueur" type="text" placeholder="Enter value">
+    <button (click)="onSubmitAjout()">Ajouter</button>
+</div>
+<div>
+    <p>Joueurs déjà inscrits (total : {{joueursInscrits.length}})</p>
+    <!-- tableau des Joueurs inscrits -->
+    <table>
+        <tr *ngFor="let joueur of joueursInscrits">
+            <td>{{joueur}}</td>
+            <td><button type="button" (click)="retireJoueur(joueur)">Retirer ce joueur</button></td>
+        </tr>
+    </table>
+    <button (click)="lancerTournoi()">Lancer le tournoi</button>
+</div>
+
