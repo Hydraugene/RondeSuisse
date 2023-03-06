@@ -9,10 +9,10 @@
     <!-- tableau des Joueurs inscrits -->
     <table>
         <tr *ngFor="let joueur of joueursInscrits">
-            <td>{{joueur}}</td>
-            <td><button type="button" (click)="retireJoueur(joueur)">Retirer ce joueur</button></td>
+            <td>{{joueur.nom}}</td>
+            <td><button type="button" (click)="retireJoueur(joueur.id)">Retirer ce joueur</button></td>
         </tr>
     </table>
-    <button (click)="lancerTournoi()">Lancer le tournoi</button>
+    <button (click)="lancerTournoi()" [disabled]="inscriptionFermes">Lancer le tournoi</button>
 </div>
 

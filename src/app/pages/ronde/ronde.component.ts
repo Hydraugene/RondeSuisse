@@ -14,4 +14,8 @@ export class RondeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  public rondeTerminee(){
+    
+  }
 }

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 //import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { JoueurI } from 'src/app/modeles/participants-i';
+import { ParticipantsService } from 'src/app/services/participants.service';
 
 imports: [
   BrowserModule,
@@ -17,10 +20,12 @@ imports: [
 
 export class InscriptionComponent implements OnInit {
 
-public joueursInscrits : string[] = []
+public joueursInscrits : JoueurI[] = []
 public nomJoueur: string = ""
+public idCompteur: number=0;
+public inscriptionFermes: boolean = false;
 
-  constructor() { }
+  constructor(public participantsService: ParticipantsService, public route:Router) { }
 
   ngOnInit(): void {
     this.joueursInscrits = []
@@ -29,14 +34,19 @@ public nomJoueur: string = ""
 
   public onSubmitAjout(){
     if (this.nomJoueur != "") {
-      this.joueursInscrits.push(this.nomJoueur);
+      this.joueursInscrits.push(this.creerJoueurVide(this.nomJoueur));
       this.nomJoueur = ""      
     }
   }
 
-  public retireJoueur(joueur: string){
-    console.log(joueur);
-    var index = this.joueursInscrits.findIndex(j => j==joueur);
+  public creerJoueurVide(nom: string){
+    this.idCompteur=this.idCompteur+1;
+    return {"id":this.idCompteur, "nom": nom, "rang":0, "nbVictoire":0, "nbDefaite":0, "nbNull":0, "score":0}
+  }
+
+  public retireJoueur(idJoueur: number){
+    console.log(idJoueur);
+    var index = this.joueursInscrits.findIndex(j => j.id==idJoueur);
     if (index === -1) {
       alert("erreur de suppression, le joueur n'existe pas")
     } else {
@@ -45,8 +55,9 @@ public nomJoueur: string = ""
   }
 
   public lancerTournoi(){
-    //création du tournoi en base
-    //retour de l'id du tournoi en base pour transmission
+    this.inscriptionFermes=false;
+    this.participantsService.lancementTournoi(this.joueursInscrits);
+    this.route.navigateByUrl('/ronde')
   }
 
 }
