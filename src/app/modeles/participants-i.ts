@@ -13,10 +13,12 @@ export interface JoueurI{
 }
 
 export interface MatchI{
+    id: number
     joueurA: JoueurI
     joueurB: JoueurI
     scoreA: number
     scoreB: number
-    vainqueur: JoueurI
+    vainqueur: JoueurI | undefined
+    fini: boolean
 }
 

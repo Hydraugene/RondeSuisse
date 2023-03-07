@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JoueurI, MatchI } from 'src/app/modeles/participants-i';
+import { ParticipantsService } from 'src/app/services/participants.service';
 
 @Component({
   selector: 'app-score',
@@ -7,11 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoreComponent implements OnInit {
 
-  
 
-  constructor() { }
+
+  constructor(public participantsService: ParticipantsService) { }
 
   ngOnInit(): void {
   }
+  
+
 
 }

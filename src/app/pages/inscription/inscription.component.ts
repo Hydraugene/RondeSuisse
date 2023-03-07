@@ -56,6 +56,9 @@ public inscriptionFermes: boolean = false;
 
   public lancerTournoi(){
     this.inscriptionFermes=false;
+    if (this.joueursInscrits.length%2!=0) {
+      this.joueursInscrits.push(this.creerJoueurVide("Joueur absent"))
+    }
     this.participantsService.lancementTournoi(this.joueursInscrits);
     this.route.navigateByUrl('/ronde')
   }

@@ -1,9 +1,32 @@
-<div>
-    Ronde en cours : {{numeroRonde}}
-    <app-score></app-score>
+Ronde en cours : {{numeroRonde}}
+<div *ngIf="!rondeEnCours">
+    <button (click)="commencerRonde()">Lancer la ronde</button>
 </div>
-<div>
-    <button (click)="rondeTerminee()">Ronde Terminée</button>
+<div *ngIf="rondeEnCours">
+    <div>
+        <table>
+            <!-- Ici un tableau avec les matchs en cours
+            le top ça serait Joueur1 : X-X : Joueur2, avec une liste déroulante des scores possibles -->
+            <tr *ngFor="let match of matchsEnCours">
+                <!-- <td>toto ime les frites</td> -->
+                <td>{{match.joueurA.nom}}</td>
+                <td>{{match.scoreA}} - {{match.scoreB}}</td>
+                <td>{{match.joueurB.nom}}</td>
+                <td><button type="button" (click)="selectionnerScore(match)">Entrer le score</button></td>
+                <td><button type="button" (click)="scoreChoisi(2, 0)" *ngIf="selectionEnCours==match.id">2-0</button></td>
+                <td><button type="button" (click)="scoreChoisi(2, 1)" *ngIf="selectionEnCours==match.id">2-1</button></td>
+                <td><button type="button" (click)="scoreChoisi(1, 0)" *ngIf="selectionEnCours==match.id">1-0</button></td>
+                <td><button type="button" (click)="scoreChoisi(0, 0)" *ngIf="selectionEnCours==match.id">0-0</button></td>
+                <td><button type="button" (click)="scoreChoisi(1, 1)" *ngIf="selectionEnCours==match.id">1-1</button></td>
+                <td><button type="button" (click)="scoreChoisi(0, 1)" *ngIf="selectionEnCours==match.id">0-1</button></td>
+                <td><button type="button" (click)="scoreChoisi(1, 2)" *ngIf="selectionEnCours==match.id">1-2</button></td>
+                <td><button type="button" (click)="scoreChoisi(0, 2)" *ngIf="selectionEnCours==match.id">0-2</button></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <button (click)="rondeTerminee()">Ronde Terminée</button>
+    </div>
 </div>
 
 <div>
