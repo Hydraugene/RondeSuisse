@@ -13,6 +13,8 @@
             <td>{{joueur.nom}}</td>
             <td>{{joueur.score}}</td>
             <td>{{joueur.nbVictoire}}-{{joueur.nbDefaite}}-{{joueur.nbNull}}</td>
+            <td><button type="button" (click)="adminChangerRang(joueur.rang, 1)" >descendre</button></td>
+            <td><button type="button" (click)="adminChangerRang(joueur.rang, -1)" >monter</button></td>
         </tr>
     </table>
 </div>

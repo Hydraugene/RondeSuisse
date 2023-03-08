@@ -16,5 +16,7 @@ export class RankingComponent implements OnInit {
   ngOnInit(): void {
     this.participants= this.participantsService.getAllParticipants();
   }
-
+  adminChangerRang(rang: number, decalage: number){
+    this.participantsService.adminChangerRang(rang, decalage);
+  }
 }

@@ -13,7 +13,7 @@ export class ParticipantsService {
   public lancementTournoi(mesJoueurs: JoueurI[]){
     this.mesParticipants = [];
     this.mesParticipants = mesJoueurs;
-    //TODO shuffle
+    this.randomizeOrder()
   }
 
   public getParticipant(id: number){
@@ -51,6 +51,49 @@ export class ParticipantsService {
 
   public getPairing(){
     return this.matchsEnCours;
+  }
+
+  //a terminer pour trier les rangs correctements
+  meilleurRang(a: JoueurI, b: JoueurI){
+    if (a.score-b.score==0) {
+      //todo meilleur golaverage
+      return 0
+    } else {
+      return a.score-b.score
+    }
+  }
+
+  public ajusterRangs(){
+    this.mesParticipants.sort((a,b)=> b.score-a.score)
+    let cpt: number = 0
+    this.mesParticipants.forEach(element => {
+      cpt++
+      element.rang = cpt
+    });
+  }
+
+  public randomizeOrder(){
+    this.mesParticipants.forEach(element => {
+      element.score = Math.floor(Math.random()*this.mesParticipants.length*10)
+    });
+    this.ajusterRangs()
+    this.mesParticipants.forEach(element => {
+      element.score=0
+    });
+  }
+
+  public adminChangerRang(rangAChanger: number, decalage: number){
+    this.mesParticipants.forEach(element => {
+      console.log(rangAChanger+" "+decalage)
+      console.log("debut"+element)
+      if (element.rang == rangAChanger) {
+        element.rang+=decalage
+      }else if (element.rang == rangAChanger+decalage) {
+        element.rang = rangAChanger
+      }
+      console.log("fin"+element)
+    });
+    this.mesParticipants.sort((a,b)=>a.rang-b.rang)
   }
 
 }

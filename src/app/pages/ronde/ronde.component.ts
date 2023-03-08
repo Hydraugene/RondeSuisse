@@ -35,6 +35,28 @@ export class RondeComponent implements OnInit {
     if (estComplet) {
       this.rondeEnCours=false
       //TODO calcul des scores et enregistrement des résultats sur les joueurs.
+      this.matchsEnCours.forEach(element => {
+        if (element.scoreA==element.scoreB) {
+          element.joueurA.score++
+          element.joueurA.nbNull++
+          element.joueurB.score++
+          element.joueurB.nbNull++
+        } else {
+          if (element.scoreA>element.scoreB) {
+            element.joueurA.score+=3;
+            element.joueurA.nbVictoire++
+            element.joueurB.nbDefaite++
+          } else {
+            element.joueurA.nbDefaite++
+            element.joueurB.score+=3
+            element.joueurB.nbVictoire++              
+          }
+          
+        }
+        this.participantsService.postParticipant(element.joueurA)
+        this.participantsService.postParticipant(element.joueurB)
+      });
+      this.participantsService.ajusterRangs()
     }
 
   }
@@ -46,7 +68,6 @@ export class RondeComponent implements OnInit {
     this.participantsService.setPairing()
     this.matchsEnCours = this.participantsService.getPairing()
     console.log("ici"+this.matchsEnCours);
-    //TODO
   }
 
   selectionnerScore(match: MatchI){
