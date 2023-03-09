@@ -34,14 +34,24 @@ public inscriptionFermes: boolean = false;
 
   public onSubmitAjout(){
     if (this.nomJoueur != "") {
-      this.joueursInscrits.push(this.creerJoueurVide(this.nomJoueur));
+      this.joueursInscrits.push(this.creerJoueurVide(this.nomJoueur, false));
       this.nomJoueur = ""      
     }
   }
 
-  public creerJoueurVide(nom: string){
+  public creerJoueurVide(nom: string, estLeBye: boolean){
     this.idCompteur=this.idCompteur+1;
-    return {"id":this.idCompteur, "nom": nom, "rang":0, "nbVictoire":0, "nbDefaite":0, "nbNull":0, "score":0}
+    return {"id":this.idCompteur, 
+    "nom": nom, 
+    "rang":0, 
+    "nbVictoire":0, 
+    "nbDefaite":0, 
+    "nbNull":0, 
+    "score":0, 
+    "adversaires": [], 
+    "gameWin": 0,
+    "gamePlayed":0,
+    "estLeBye":estLeBye}
   }
 
   public retireJoueur(idJoueur: number){
@@ -57,7 +67,7 @@ public inscriptionFermes: boolean = false;
   public lancerTournoi(){
     this.inscriptionFermes=false;
     if (this.joueursInscrits.length%2!=0) {
-      this.joueursInscrits.push(this.creerJoueurVide("Joueur absent"))
+      this.joueursInscrits.push(this.creerJoueurVide("Joueur absent", true))
     }
     this.participantsService.lancementTournoi(this.joueursInscrits);
     this.route.navigateByUrl('/ronde')

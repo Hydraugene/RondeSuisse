@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JoueurI, MatchI } from 'src/app/modeles/participants-i';
+import { JoueurI, MatchI, RondeI } from 'src/app/modeles/participants-i';
 import { ParticipantsService } from 'src/app/services/participants.service';
 
 
@@ -34,29 +34,51 @@ export class RondeComponent implements OnInit {
     } 
     if (estComplet) {
       this.rondeEnCours=false
-      //TODO calcul des scores et enregistrement des résultats sur les joueurs.
+      //calcul des scores et enregistrement des résultats sur les joueurs.
       this.matchsEnCours.forEach(element => {
-        if (element.scoreA==element.scoreB) {
-          element.joueurA.score++
-          element.joueurA.nbNull++
-          element.joueurB.score++
-          element.joueurB.nbNull++
-        } else {
-          if (element.scoreA>element.scoreB) {
-            element.joueurA.score+=3;
-            element.joueurA.nbVictoire++
-            element.joueurB.nbDefaite++
-          } else {
-            element.joueurA.nbDefaite++
+        if (element.joueurA.estLeBye || element.joueurB.estLeBye) {
+          if (element.joueurA.estLeBye) {
             element.joueurB.score+=3
-            element.joueurB.nbVictoire++              
+            element.joueurB.nbVictoire++
+          } else {
+            element.joueurA.score+=3
+            element.joueurA.nbVictoire++
           }
-          
+        } else {
+          if (element.scoreA==element.scoreB) {
+            element.joueurA.score++
+            element.joueurA.nbNull++
+            element.joueurB.score++
+            element.joueurB.nbNull++
+          } else {
+            if (element.scoreA>element.scoreB) {
+              element.joueurA.score+=3;
+              element.joueurA.nbVictoire++
+              element.joueurB.nbDefaite++
+            } else {
+              element.joueurA.nbDefaite++
+              element.joueurB.score+=3
+              element.joueurB.nbVictoire++              
+            }
+            
+          }
+          //enregistrement des scores
+          element.joueurA.gameWin+=element.scoreA
+          element.joueurA.gamePlayed+=element.scoreA+element.scoreB
+          element.joueurB.gameWin+=element.scoreB
+          element.joueurB.gamePlayed+=element.scoreA+element.scoreB
+          //ajout de la mémoire des adversaires rencontrés
+          element.joueurA.adversaires.push(element.joueurB.id)
+          element.joueurB.adversaires.push(element.joueurA.id)
         }
+        //enregistrement des joueurs
         this.participantsService.postParticipant(element.joueurA)
         this.participantsService.postParticipant(element.joueurB)
       });
+      //Mise à jour du classement
       this.participantsService.ajusterRangs()
+      //enregistrement de la ronde
+      this.participantsService.tournoi.push({id: this.numeroRonde, matchs: this.matchsEnCours} as RondeI)
     }
 
   }
@@ -64,16 +86,18 @@ export class RondeComponent implements OnInit {
   public commencerRonde(){
     this.numeroRonde++;
     this.rondeEnCours=true
-    console.log(this.matchsEnCours)
+    // console.log(this.matchsEnCours)
     this.participantsService.setPairing()
     this.matchsEnCours = this.participantsService.getPairing()
-    console.log("ici"+this.matchsEnCours);
+    // console.log("ici"+this.matchsEnCours);
   }
 
+  //permet de selectionner le match dont on veut enregistrer le score
   selectionnerScore(match: MatchI){
     this.selectionEnCours=match.id
   }
 
+  //selection du résultat du match
   scoreChoisi(scoreA: number, scoreB: number){
     this.matchsEnCours.forEach(element => {
       if (element.id==this.selectionEnCours) {

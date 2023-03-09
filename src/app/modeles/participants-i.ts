@@ -10,6 +10,10 @@ export interface JoueurI{
     nbDefaite: number
     nbNull: number
     score: number
+    adversaires: number[]
+    gameWin: number
+    gamePlayed: number
+    estLeBye:boolean
 }
 
 export interface MatchI{
@@ -22,3 +26,7 @@ export interface MatchI{
     fini: boolean
 }
 
+export interface RondeI{
+    id: number
+    matchs: MatchI[]
+}
