@@ -33,7 +33,7 @@ export class ParticipantsService {
 
   public setPairing(){
     this.matchsEnCours = []
-    this.mesParticipants.sort((a,b)=>b.score-a.score)
+    this.mesParticipants.sort((a,b)=>a.rang-b.rang)
     let cpt = this.mesParticipants.length/2;
     for (let index = 1; index < cpt+1; index++) {
       this.matchsEnCours.push({
